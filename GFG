@@ -1,0 +1,23 @@
+class Solution:
+    def optimalSearchTree(self, keys, freq, n):
+        cost = [[0 for _ in range(n)] for _ in range(n)]
+
+        for i in range(n):
+            cost[i][i] = freq[i]
+
+        for l in range(2, n + 1): 
+            for i in range(n - l + 1):
+                j = i + l - 1
+                cost[i][j] = float('inf')
+
+                freq_sum = sum(freq[i:j + 1])
+
+                for r in range(i, j + 1):
+                    c = 0
+                    if r > i:
+                        c += cost[i][r - 1]
+                    if r < j:
+                        c += cost[r + 1][j]
+                    cost[i][j] = min(cost[i][j], c + freq_sum)
+
+        return cost[0][n - 1]
